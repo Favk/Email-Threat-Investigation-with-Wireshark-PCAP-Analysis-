@@ -25,7 +25,7 @@ Result: Identified 192.168.1.4 as the malicious sender and found three distinct 
 | **D.pcap** | Email with subject "Test message for capture" with a words.txt file and a C source file attached. Sent from 192.168.1.4. |
 
 # Malicious actor: 192.168.1.4 
-[TODO: add one sentence on why this host stands out, e.g. it is the source of the emails with attachments in A and D]
+It is the source of the emails with attachments in A and D
 
 # Methodology
 i. Isolate email traffic. Filtered each capture with smtp to list all mail transmissions.
