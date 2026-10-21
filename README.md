@@ -1,4 +1,4 @@
-# Email-Threat-Investigation-with-Wireshark-PCAP-Analysis-
+# Email Threat Investigation with Wireshark PCAP Analysis
 
 Investigated four packet captures (A.pcap to D.pcap) to identify a malicious sender, find phishing and extortion emails, and extract attachments from SMTP traffic using Wireshark and command-line email tools.
 
@@ -28,12 +28,17 @@ Result: Identified 192.168.1.4 as the malicious sender and found three distinct 
 [TODO: add one sentence on why this host stands out, e.g. it is the source of the emails with attachments in A and D]
 
 # Methodology
-Isolate email traffic. Filtered each capture with smtp to list all mail transmissions.
-Find emails with content. Used smtp contains DATA to find messages that carried a body or attachment, and noted the source IP of each.
-Identify senders. Used smtp contains FROM to pull sender addresses.
-Export and extract. Exported suspicious messages as .eml files, ran munpack to extract the MIME parts, and used tnef to open winmail.dat attachments.
-Inspect attachments. Reviewed extracted images, patch files, text files, and C source for anything malicious or notable.
-Correlate across captures. Compared source IPs, subjects, and behavior across A to D to settle on one host.
+i. Isolate email traffic. Filtered each capture with smtp to list all mail transmissions.
+
+ii. Find emails with content. Used smtp contains DATA to find messages that carried a body or attachment, and noted the source IP of each.
+
+iii. Identify senders. Used smtp contains FROM to pull sender addresses.
+
+iv. Export and extract. Exported suspicious messages as .eml files, ran munpack to extract the MIME parts, and used tnef to open winmail.dat attachments.
+
+v. Inspect attachments. Reviewed extracted images, patch files, text files, and C source for anything malicious or notable.
+
+vi. Correlate across captures. Compared source IPs, subjects, and behavior across A to D to settle on one host.
 
 ## Phishing Email Analysis (C.pcap)
 
@@ -55,4 +60,24 @@ iii. Links to a Bitcoin purchase site and a wallet signup page presented as "hel
 
 iv. Subject lines that embed the victim's password for urgency
 
+# MITRE ATT&CK Mapping
+| Observation | Technique |
+| :--- | :--- |
+| **Extortion emails sent to multiple recipients** |	T1566 Phishing |
+| **Emails with attachments sent from 192.168.1.4 (A, D)** | T1566.001 Spearphishing Attachment |
 
+# What I Learned
+i. How SMTP traffic appears in Wireshark and how to isolate it with display filters
+
+ii. How to recover attachments from raw packets, including Microsoft TNEF (winmail.dat) wrappers
+
+iii. That the same host can appear in multiple captures, so correlation across files matters
+
+iv. That extortion emails often rely on leaked or reused passwords rather than real access to the victim's machine
+
+# Limitations and Next Steps
+i. I identified the sender by IP address. In a real case I would also check email headers, timestamps, and mail server logs to confirm.
+
+ii. I did not run the extracted files in a sandbox. Next time I would hash them and check them against VirusTotal.
+
+iii. I would write this up as a short incident report with a timeline.
